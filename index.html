@@ -1,0 +1,242 @@
+﻿<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <script type="text/javascript" src="./scripts/script.js"></script>
+</head>
+<body onload="preloader()">
+<table>
+<tr>
+  <th colspan="2" align="right">
+    <input type="checkbox" id="version1" value="1">1.0版<br/>
+    <input type="checkbox" id="version2" value="2">1.5版<br/>
+    <input type="checkbox" id="version3" value="3" checked>2.0版<br/>
+  </th>
+  <th align="left">
+    <input type="checkbox" id="reimu1" value="reimu1">選用 博麗靈夢(1.0)<br/>
+    <input type="checkbox" id="reimu2" value="reimu1">選用 博麗靈夢(2.0)<br/>
+    <input type="checkbox" id="tenshi" value="tenshi">選用 比那名居天子(2.0)<br/>
+  </th>
+  <th colspan="2" align="left">
+    <input type="checkbox" id="hellGroup" value="hellGroup" checked>映姬與小町同捆<br/>
+    <input type="checkbox" id="alice1" value="hellGroup">必用 愛莉絲(1.0)<br/>
+    <input type="checkbox" id="alice2" value="hellGroup" checked>必用 愛莉絲(2.0)<br/>
+  </th>
+</tr>
+<tr>
+  <th colspan="5"><input type="button" value="開始選牌" onclick="startSelect()" style="width:200px;height:40px;font-size:20px;">
+  <!--<br/>
+  <input type="text" id="text1" size="40">-->
+  </th>
+</tr>
+<tr>
+  <th><img id="imageid01" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid01'));"></th>
+  <th><img id="imageid02" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid02'));"></th>
+  <th><img id="imageid03" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid03'));"></th>
+  <th><img id="imageid04" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid04'));"></th>
+  <th><img id="imageid05" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid05'));"></th>
+</tr>
+<tr>
+  <th><img id="imageid06" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid06'));"></th>
+  <th><img id="imageid07" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid07'));"></th>
+  <th><img id="imageid08" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid08'));"></th>
+  <th><img id="imageid09" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid09'));"></th>
+  <th><img id="imageid10" src="./images/000_00.jpg" width="216px" height="310px" onclick="changeItem(document.getElementById('imageid10'));"></th>
+</tr>
+</table>
+</body>
+</html>
+<script type="text/javascript">
+
+var actionPool = new Array(0);
+var tempPoolver1 = ["101_02","102_02","103_02","104_03","105_03","106_03","107_04","108_03","109_04","110_04","111_04","112_05","113_05","114_05","115_05"];
+var tempPoolver2 = ["201_04","202_02","203_03","204_05","205_05"];
+var tempPoolver3 = ["301_02","302_03","303_02","304_03","305_02","306_06","307_03","308_05","309_03","310_05","311_04","312_05","313_05","314_04","315_04","316_02","317_05","318_03","319_02","320_04"];
+
+  function changeItem(obj){
+  
+	//alert(obj.value);
+	var idx = actionPool.indexOf(obj.value);
+	//alert(getRemainItem(actionPool, obj.value));
+	actionPool[idx] = getRemainItem(actionPool, obj.value);
+	actionPool = sortArray(actionPool);
+	genImages();
+	
+  }
+
+  function startSelect(){
+	actionPool = selectAction();
+	genImages();
+  }
+  
+  function genImages(){
+    var obj01 = document.getElementById("imageid01");
+	getPic(obj01,actionPool[0]);
+	var obj02 = document.getElementById("imageid02");
+	getPic(obj02,actionPool[1]);
+	var obj03 = document.getElementById("imageid03");
+	getPic(obj03,actionPool[2]);
+	var obj04 = document.getElementById("imageid04");
+	getPic(obj04,actionPool[3]);
+	var obj05 = document.getElementById("imageid05");
+	getPic(obj05,actionPool[4]);
+	var obj06 = document.getElementById("imageid06");
+	getPic(obj06,actionPool[5]);
+	var obj07 = document.getElementById("imageid07");
+	getPic(obj07,actionPool[6]);
+	var obj08 = document.getElementById("imageid08");
+	getPic(obj08,actionPool[7]);
+	var obj09 = document.getElementById("imageid09");
+	getPic(obj09,actionPool[8]);
+	var obj10 = document.getElementById("imageid10");
+	getPic(obj10,actionPool[9]);
+  }
+  
+  function selectAction(){
+    
+    var tempPool = new Array(0);
+    var temp = new Array(0);
+    var resultPool = new Array(0);
+
+	//是否選擇1.0版
+	if(document.all("version1").checked){
+		tempPool = tempPool.concat(tempPoolver1);
+		//alert(tempPool.length);
+	}
+	
+	//是否選擇1.5版
+	if(document.all("version2").checked){
+		tempPool = tempPool.concat(tempPoolver2);
+		//alert(tempPool.length);
+	}
+	
+	//是否選擇2.0版
+	if(document.all("version3").checked){
+		tempPool = tempPool.concat(tempPoolver3);
+		//alert(tempPool.length);
+	}
+	//alert(tempPool.length);
+	
+	//是否選擇小町與映姬同梱
+    if(document.all("hellGroup").checked){
+		var idx1 = tempPool.indexOf("319_02");
+		//alert(idx1);
+		tempPool.splice(idx1, 1);
+		//alert(tempPool.length);
+		var idx2 = tempPool.indexOf("320_04");
+		//alert(idx2);
+		tempPool.splice(idx2, 1);
+		//alert(tempPool.length);
+        tempPool.push("999");
+		//alert(tempPool.length);
+    }
+	//alert(tempPool.length);
+	
+	//是否選用靈夢(1.0)
+	if(!document.all("reimu1").checked){
+		var idx = tempPool.indexOf("112_05");
+		if(idx != -1){
+			tempPool.splice(idx, 1);
+		}
+		//alert(tempPool.length);
+	}
+	
+	//是否選用靈夢(2.0)
+	if(!document.all("reimu2").checked){
+		var idx = tempPool.indexOf("317_05");
+		if(idx != -1){
+			tempPool.splice(idx, 1);
+		}
+		//alert(tempPool.length);
+	}
+	
+	//是否選用天子(2.0)
+	if(!document.all("tenshi").checked){
+		var idx = tempPool.indexOf("312_05");
+		if(idx != -1){
+			tempPool.splice(idx, 1);
+		}
+		//alert(tempPool.length);
+	}
+	
+	//隨機選擇10張牌
+    var j=0;
+    temp = tempPool;
+    while(j<10) {
+      var r = Math.floor( Math.random() * temp.length );
+      var n = temp[r];
+      resultPool.push(n);
+ 
+      for(i=0; i<temp.length; i++) {
+        if (temp[i] == n) {
+          temp.splice(i, 1);
+          i--;
+        }
+      }
+      j++;
+    }
+	
+	//若小町與映姬(同梱狀態)有被選到，則調整選牌結果，從頭補上小町與映姬
+	var idx = resultPool.indexOf("999");
+	if(idx != -1){
+        resultPool.splice(idx, 1);
+        resultPool.unshift("319_02");
+        resultPool.unshift("320_04");
+		resultPool = modifyArray(resultPool);
+	}
+	//alert(resultPool.length);
+	
+	//是否必用愛麗絲(1.0)，若有而沒選到，則從選牌結果進行調整，從頭補上愛麗絲(1.0)
+	if(document.all("alice1").checked && document.all("version1").checked){
+		var idx = resultPool.indexOf("110_04");
+		if(idx == -1){
+			resultPool.unshift("110_04");
+			resultPool = modifyArray(resultPool);
+		}
+		//alert(resultPool.length);
+	}
+	
+	//是否必用愛麗絲(2.0)，若有而沒選到，則從選牌結果進行調整，從頭補上愛麗絲(2.0)
+	if(document.all("alice2").checked && document.all("version3").checked){
+		var idx = resultPool.indexOf("314_04");
+		if(idx == -1){
+			resultPool.unshift("314_04");
+			resultPool = modifyArray(resultPool);
+		}
+		//alert(resultPool.length);
+	}
+	
+	//alert(resultPool.length);
+	resultPool = sortArray(resultPool);
+	//alert(resultPool.length);
+    //document.getElementById("text1").value = resultPool;
+	//alert(resultPool.length);
+	
+	return resultPool;
+	
+  }
+  
+  function getRemainItem(inputArray, item){
+  
+	var tempPool = new Array(0);
+	var mirriorPool = modifyArray(inputArray);
+	tempPool = tempPool.concat(tempPoolver1);
+	tempPool = tempPool.concat(tempPoolver2);
+	tempPool = tempPool.concat(tempPoolver3);
+	tempPool.splice(mirriorPool.indexOf(item), 1);
+	mirriorPool.splice(mirriorPool.indexOf(item), 1);
+	
+	//選擇元素
+	var flag = true;
+	var newItem;
+	while(flag){
+		var r = Math.floor( Math.random() * tempPool.length );
+		newItem = tempPool[r];
+		if(mirriorPool.indexOf(newItem) == -1){
+			flag = false;
+		}
+	}
+	return newItem;
+	
+  }
+
+</script>
